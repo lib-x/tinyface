@@ -39,3 +39,16 @@ Try to install dlib/libjpeg with package manager of your distribution or [compil
 + https://github.com/Kagami/go-face
 + https://github.com/leandroveronezi/go-recognizer
 + https://hackernoon.com/face-recognition-with-go-676a555b8a7e
+
+## Models
+Currently shape_predictor_5_face_landmarks.dat, mmod_human_face_detector.dat and dlib_face_recognition_resnet_model_v1.dat are required. You may download them from [dlib-models](https://github.com/davisking/dlib-models) repo:
+```bash
+mkdir models && cd models
+wget https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2
+bunzip2 shape_predictor_5_face_landmarks.dat.bz2
+wget https://github.com/davisking/dlib-models/raw/master/dlib_face_recognition_resnet_model_v1.dat.bz2
+bunzip2 dlib_face_recognition_resnet_model_v1.dat.bz2
+wget https://github.com/davisking/dlib-models/raw/master/mmod_human_face_detector.dat.bz2
+bunzip2 mmod_human_face_detector.dat.bz2
+```
+you can also use [go-face 's testdata](https://github.com/Kagami/go-face-testdata) repo 
