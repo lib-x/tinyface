@@ -102,31 +102,22 @@ func (r *Recognizer) Close() {
 }
 
 // AddImageToSamples add a sample image to the samples
-func (r *Recognizer) AddImageToSamples(Path string, Id string) error {
-
-	file := Path
+func (r *Recognizer) AddImageToSamples(filePath string, Id string) error {
 	var err error
-
+	faces := make([]goFace.Face, 0)
 	if r.useCNN {
-
-		file, err = r.createTempGrayFile(file, Id)
-
+		f, err := r.createTempGrayFile(filePath, Id)
 		if err != nil {
 			return err
 		}
-		defer os.Remove(file)
-	}
-
-	var faces []goFace.Face
-
-	if r.useCNN {
-		faces, err = r.rec.RecognizeFileCNN(file)
+		defer os.Remove(f)
+		if faces, err = r.rec.RecognizeFileCNN(f); err != nil {
+			return err
+		}
 	} else {
-		faces, err = r.rec.RecognizeFile(file)
-	}
-
-	if err != nil {
-		return err
+		if faces, err = r.rec.RecognizeFile(filePath); err != nil {
+			return err
+		}
 	}
 
 	if len(faces) == 0 {
@@ -140,9 +131,7 @@ func (r *Recognizer) AddImageToSamples(Path string, Id string) error {
 	f := &SampleBaseData{}
 	f.Id = Id
 	f.Descriptor = faces[0].Descriptor
-
 	r.samplesData = append(r.samplesData, f)
-
 	return nil
 
 }
